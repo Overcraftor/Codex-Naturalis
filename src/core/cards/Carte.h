@@ -44,3 +44,9 @@ public:
     CarteDorure(Face recto, Face verso, Resource r);
     ~CarteDorure() override = default;
 };
+
+class CarteDepart : public Carte {
+public:
+    CarteDepart(Face recto, Face verso);
+    ~CarteDepart() override = default;
+};
