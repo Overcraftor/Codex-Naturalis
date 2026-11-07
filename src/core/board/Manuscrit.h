@@ -32,5 +32,8 @@ public:
     int compter(Object o) const;
 
     bool peutPoser(const Carte& c, bool recto, int x, int y) const;
+    bool estOccupe(int x, int y) const;
+    const Placement* getPlacement(int x, int y) const;
+    const std::map<std::pair<int, int>, Placement>& getGrille() const { return grille; }
     void poser(const Carte& c, bool recto, int x, int y);
 };

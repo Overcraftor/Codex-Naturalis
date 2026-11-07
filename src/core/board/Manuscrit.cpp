@@ -39,3 +39,12 @@ void Manuscrit::poser(const Carte& c, const bool recto, int x, int y) {
 
     // mettre à jour l'inventaire et ressources
 }
+
+bool Manuscrit::estOccupe(const int x, const int y) const {
+    return grille.find({x, y}) != grille.end();
+}
+
+const Placement* Manuscrit::getPlacement(const int x, const int y) const {
+    const auto it = grille.find({x, y});
+    return (it != grille.end()) ? &it->second : nullptr;
+}
