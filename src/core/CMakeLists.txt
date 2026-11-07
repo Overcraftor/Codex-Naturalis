@@ -1,17 +1,14 @@
-add_library(CoreLib STATIC
-        scoring/RegleDePoints.cpp
-        scoring/RegleDePoints.h
-        board/Manuscrit.cpp
-        board/Manuscrit.h)
+add_library(CoreLib STATIC)
 target_sources(CoreLib
-        PRIVATE core.cpp cards/Face.cpp cards/Coin.cpp cards/Carte.cpp
+        PRIVATE cards/Face.cpp cards/Coin.cpp cards/Carte.cpp scoring/RegleDePoints.cpp board/Manuscrit.cpp
         INTERFACE
         FILE_SET HEADERS
         FILES
-            core.h
             cards/Face.h
             cards/Coin.h
             cards/Carte.h
-            Types.h)
+            Types.h
+            scoring/RegleDePoints.h
+            board/Manuscrit.h)
 
 target_include_directories(CoreLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
