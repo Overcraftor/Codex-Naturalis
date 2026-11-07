@@ -15,11 +15,13 @@ struct Placement {
 };
 
 class Manuscrit {
+    // std::pair tuple de 2 items
     std::map<std::pair<int, int>, Placement> grille;
 
     std::map<Resource, int> inventaireRessources;
     std::map<Object, int> inventaireObjets;
 
+    // pour compter les cartes et savoir lesquelles sont en dessous/dessus
     int compteurOrdre = 0;
 
 public:

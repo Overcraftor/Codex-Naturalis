@@ -27,6 +27,6 @@ std::optional<Resource> Coin::getResource() const {
     return resource;
 }
 
-std::optional<Objet> Coin::getObjet() const {
+std::optional<Object> Coin::getObjet() const {
     return object;
 }

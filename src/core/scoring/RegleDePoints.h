@@ -10,10 +10,9 @@ protected:
 
 public:
     explicit RegleDePoints(const int val) : valeur(val) {}
-
     virtual ~RegleDePoints() = default;
 
-    virtual int calculer(const Manuscrit& m, const Placement& p) const = 0;
+    virtual int calculer(const Manuscrit& m, const Placement& p) const = 0; // doit être rédéfinie
 
     int getValeur() const { return valeur; }
 };
