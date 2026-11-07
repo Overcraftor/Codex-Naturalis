@@ -33,3 +33,7 @@ CarteDorure::CarteDorure(Face recto, Face verso, const Resource r)
     : CartePiochable(std::move(recto), std::move(verso), r)
 {
 }
+CarteDepart::CarteDepart(Face recto, Face verso)
+    : Carte(std::move(recto), std::move(verso))
+{
+}

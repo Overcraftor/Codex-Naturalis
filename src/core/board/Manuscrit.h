@@ -31,6 +31,6 @@ public:
     int compter(Resource r) const;
     int compter(Object o) const;
 
-    bool peutPoser(const Carte& c, bool recto, int x, int y) const;
-    void poser(const Carte& c, bool recto, int x, int y);
+    bool peutPoser(const CartePiochable& c, bool recto, int x, int y) const;
+    void poser(const CartePiochable& c, bool recto, int x, int y);
 };

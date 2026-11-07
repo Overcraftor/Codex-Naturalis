@@ -6,9 +6,9 @@ int PointsFixes::calculer(const Manuscrit& m, const Placement& p) const {
 }
 
 int PointsParObjet::calculer(const Manuscrit& m, const Placement& p) const {
-    // todo
+    return valeur * m.compter(objetCible);
 }
 
 int PointsParCoinRecouvert::calculer(const Manuscrit& m, const Placement& p) const {
-    // todo
+    
 }
