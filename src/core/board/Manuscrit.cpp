@@ -12,7 +12,7 @@ int Manuscrit::compter(const Object o) const {
     return (it != inventaireObjets.end()) ? it->second : 0;
 }
 
-bool Manuscrit::peutPoser(const CartePiochable& c, bool recto, int x, int y) const {
+bool Manuscrit::peutPoser(const Carte& c, bool recto, int x, int y) const {
     // la case est déjà occupée
     if (grille.find({x, y}) != grille.end()) {
         return false;
@@ -76,7 +76,7 @@ bool Manuscrit::peutPoser(const CartePiochable& c, bool recto, int x, int y) con
     return true;
 }
 
-void Manuscrit::poser(const CartePiochable& c, const bool recto, int x, int y) {
+void Manuscrit::poser(const Carte& c, const bool recto, int x, int y) {
     if (!peutPoser(c, recto, x, y)) {
         throw std::invalid_argument("Placement invalide.");
     }
@@ -86,4 +86,13 @@ void Manuscrit::poser(const CartePiochable& c, const bool recto, int x, int y) {
 
     
     // mettre à jour l'inventaire et ressources
+}
+
+bool Manuscrit::estOccupe(const int x, const int y) const {
+    return grille.find({x, y}) != grille.end();
+}
+
+const Placement* Manuscrit::getPlacement(const int x, const int y) const {
+    const auto it = grille.find({x, y});
+    return (it != grille.end()) ? &it->second : nullptr;
 }

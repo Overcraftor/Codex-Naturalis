@@ -1,12 +1,14 @@
 #pragma once
-#include <string>
+
+#include <string> 
+
 #include "Face.h"
 
 class Participant {
     std::string nom;
     int score;
 
-private:
+protected: 
     Participant(const std::string& nom) : nom(nom), score(0) {}
 
 public:
