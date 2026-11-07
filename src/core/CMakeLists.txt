@@ -1,4 +1,8 @@
-add_library(CoreLib STATIC)
+add_library(CoreLib STATIC
+        scoring/RegleDePoints.cpp
+        scoring/RegleDePoints.h
+        board/Manuscrit.cpp
+        board/Manuscrit.h)
 target_sources(CoreLib
         PRIVATE core.cpp cards/Face.cpp cards/Coin.cpp cards/Carte.cpp
         INTERFACE
