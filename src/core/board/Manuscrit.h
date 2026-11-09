@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <optional>
 #include <utility>
 #include "Types.h"
 
@@ -33,7 +34,10 @@ public:
 
     bool peutPoser(const Carte& c, bool recto, int x, int y) const;
     bool estOccupe(int x, int y) const;
-    const Placement* getPlacement(int x, int y) const;
+    std::optional<Placement> getPlacement(int x, int y) const;
     const std::map<std::pair<int, int>, Placement>& getGrille() const { return grille; }
     void poser(const Carte& c, bool recto, int x, int y);
+
+    static std::array<std::pair<std::pair<int ,int>, PositionCoin>, 4> getVoisins(const Placement& p);
+    static std::array<std::pair<std::pair<int ,int>, PositionCoin>, 4> getVoisins(int x, int y);
 };

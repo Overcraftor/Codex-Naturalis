@@ -14,54 +14,25 @@ int Manuscrit::compter(const Object o) const {
 
 bool Manuscrit::peutPoser(const Carte& c, bool recto, int x, int y) const {
     // la case est déjà occupée
-    if (grille.find({x, y}) != grille.end()) {
+    if (grille.find({x, y}) != grille.end())
         return false;
-    }
 
     bool posable = false;
+    for (const auto& [coords, coinCible] : getVoisins(x, y)) {
+        const std::optional<Placement> voisin = getPlacement(coords.first, coords.second);
+        if (voisin.has_value()) {
+            // on récupère la face
+            const Face& faceVoisine = voisin->recto ? voisin->carte->getRecto() : voisin->.carte->getVerso();
 
-    // voisine en bas à droite : on recouvre son coin HG
-    if (grille.find({x+1, y-1}) != grille.end()) {
-        if (grille.at({x+1, y-1}).recto) {
-            if (!grille.at({x+1, y-1}).carte->getRecto().getCoin(PositionCoin::HG).isVisible()) return false;
-        } else {
-            if (!grille.at({x+1, y-1}).carte->getVerso().getCoin(PositionCoin::HG).isVisible()) return false;
-        }
-        posable = true;
-    }
+            // si le coin n'est pas visible, la carte n'est pas posable
+            if (!faceVoisine.getCoin(coinCible).isVisible()) return false;
 
-    // voisine en bas à gauche : on recouvre son coin HD
-    if (grille.find({x-1, y-1}) != grille.end()) {
-        if (grille.at({x-1, y-1}).recto) {
-            if (!grille.at({x-1, y-1}).carte->getRecto().getCoin(PositionCoin::HD).isVisible()) return false;
-        } else {
-            if (!grille.at({x-1, y-1}).carte->getVerso().getCoin(PositionCoin::HD).isVisible()) return false;
+            posable = true;
         }
-        posable = true;
-    }
-
-    // voisine en haut à droite : on recouvre son coin BG
-    if (grille.find({x+1, y+1}) != grille.end()) {
-        if (grille.at({x+1, y+1}).recto) {
-            if (!grille.at({x+1, y+1}).carte->getRecto().getCoin(PositionCoin::BG).isVisible()) return false;
-        } else {
-            if (!grille.at({x+1, y+1}).carte->getVerso().getCoin(PositionCoin::BG).isVisible()) return false;
-        }
-        posable = true;
-    }
-
-    // voisine en haut à gauche : on recouvre son coin BD
-    if (grille.find({x-1, y+1}) != grille.end()) {
-        if (grille.at({x-1, y+1}).recto) {
-            if (!grille.at({x-1, y+1}).carte->getRecto().getCoin(PositionCoin::BD).isVisible()) return false;
-        } else {
-            if (!grille.at({x-1, y+1}).carte->getVerso().getCoin(PositionCoin::BD).isVisible()) return false;
-        }
-        posable = true;
     }
 
     // la carte ne touche aucune autre carte
-    if (!posable) return false;
+    if (!posable && !grille.empty()) return false;
 
 
     // coût : seulement si la carte est posée recto (vide pour les cartes non dorées)
@@ -81,18 +52,69 @@ void Manuscrit::poser(const Carte& c, const bool recto, int x, int y) {
         throw std::invalid_argument("Placement invalide.");
     }
 
+    // il faut retirer les ressources des coins cachés par la nouvelle carte
+    for (const auto& [coords, coinCible] : getVoisins(x, y)) {
+        const std::optional<Placement> voisin = getPlacement(coords.first, coords.second);
+        if (voisin.has_value()) {
+            const Face& faceVoisine = voisin->recto ? voisin->carte->getRecto() : voisin->carte->getVerso();
+            const Coin& coinRecouvert = faceVoisine.getCoin(coinCible);
+
+            // On retire les éléments du coin qui disparaît sous la nouvelle carte
+            if (coinRecouvert.getResource().has_value()) {
+                inventaireRessources[coinRecouvert.getResource().value()]--;
+            }
+            if (coinRecouvert.getObjet().has_value()) {
+                inventaireObjets[coinRecouvert.getObjet().value()]--;
+            }
+        }
+    }
+
+    // place la carte
     const Placement p = { &c, x, y, recto, compteurOrdre++ };
     grille[{x, y}] = p;
 
-    
-    // mettre à jour l'inventaire et ressources
+    const Face& nouvelleFace = recto ? c.getRecto() : c.getVerso();
+
+    // ajout ressources au centre
+    if (recto) {
+        for (Resource r : nouvelleFace.getCentre()) {
+            inventaireRessources[r]++;
+        }
+    }
+
+    // ajout coins visibles de la nouvelle carte
+    for (const Coin& coin : nouvelleFace.getCoins()) {
+        if (coin.isVisible()) {
+            if (coin.getResource().has_value()) {
+                inventaireRessources[coin.getResource().value()]++;
+            }
+            if (coin.getObjet().has_value()) {
+                inventaireObjets[coin.getObjet().value()]++;
+            }
+        }
+    }
+}
+
+std::array<std::pair<std::pair<int ,int>, PositionCoin>, 4> Manuscrit::getVoisins(const Placement& p)
+{
+    return getVoisins(p.x, p.y);
+}
+
+std::array<std::pair<std::pair<int ,int>, PositionCoin>, 4> Manuscrit::getVoisins(int x, int y)
+{
+    return {{
+        {{x+1, y-1}, PositionCoin::HG},
+        {{x-1, y-1}, PositionCoin::HD},
+        {{x+1, y+1}, PositionCoin::BG},
+        {{x-1, y+1}, PositionCoin::BD}
+    }};
 }
 
 bool Manuscrit::estOccupe(const int x, const int y) const {
     return grille.find({x, y}) != grille.end();
 }
 
-const Placement* Manuscrit::getPlacement(const int x, const int y) const {
+std::optional<Placement> Manuscrit::getPlacement(const int x, const int y) const {
     const auto it = grille.find({x, y});
-    return (it != grille.end()) ? &it->second : nullptr;
+    return (it != grille.end()) ? std::optional{it->second} : std::nullopt;
 }
