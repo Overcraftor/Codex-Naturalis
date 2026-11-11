@@ -1,16 +1,17 @@
 #include "Face.h"
 #include <stdexcept>
+#include <utility>
 
 #include "scoring/RegleDePoints.h"
 
-Face::Face(std::array<Coin, 4> coins_in,
+Face::Face(const std::array<Coin, 4>& coins_in,
            std::vector<Resource> center_in,
            std::vector<Resource> cost_in,
-           const RegleDePoints* rule)
+           std::shared_ptr<RegleDePoints> rule)
     : coins(coins_in),
       center(std::move(center_in)),
       cost(std::move(cost_in)),
-      rule(rule)
+      rule(std::move(rule))
 {
     if (center.size() > 3) throw std::invalid_argument("Trop de ressources au centre (max 3)");
     if (cost.size() > 5) throw std::invalid_argument("Coût trop élevé (max 5)");

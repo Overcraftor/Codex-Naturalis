@@ -1,6 +1,6 @@
 add_library(CoreLib STATIC)
 target_sources(CoreLib
-        PRIVATE cards/Face.cpp cards/Coin.cpp cards/Carte.cpp scoring/RegleDePoints.cpp board/Manuscrit.cpp engine/Pioche.cpp
+        PRIVATE cards/Face.cpp cards/Coin.cpp cards/Carte.cpp scoring/RegleDePoints.cpp board/Manuscrit.cpp engine/Pioche.cpp engine/GameFactory.cpp
         INTERFACE
         FILE_SET HEADERS
         FILES
@@ -11,7 +11,8 @@ target_sources(CoreLib
             scoring/RegleDePoints.h
             scoring/Objectif.h
             board/Manuscrit.h
-            engine/Pioche.h)
+            engine/Pioche.h
+            engine/GameFactory.h)
 
 
 include(FetchContent)
@@ -26,3 +27,5 @@ FetchContent_MakeAvailable(json)
 target_link_libraries(CoreLib PRIVATE nlohmann_json::nlohmann_json)
 
 target_include_directories(CoreLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})

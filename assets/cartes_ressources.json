@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "regne": "CHAMPIGNON",
+    "points": 0,
+    "recto": {
+      "HG": "CHAMPIGNON",
+      "HD": "VIDE",
+      "BG": "VEGETAL",
+      "BD": "INVISIBLE"
+    }
+  },
+  {
+    "id": 2,
+    "regne": "CHAMPIGNON",
+    "points": 0,
+    "recto": {
+      "HG": "VIDE",
+      "HD": "INVISIBLE",
+      "BG": "CHAMPIGNON",
+      "BD": "PARCHEMIN"
+    }
+  }
+]

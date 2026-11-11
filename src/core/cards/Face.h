@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <memory>
 #include <vector>
 #include "Types.h"
 #include "cards/Coin.h"
@@ -15,13 +16,13 @@ class Face {
     std::vector<Resource> center;
     std::vector<Resource> cost;
 
-    const RegleDePoints* rule;
+    std::shared_ptr<RegleDePoints> rule;
 
 public:
-    explicit Face(std::array<Coin, 4> coins,
+    explicit Face(const std::array<Coin, 4>& coins,
                   std::vector<Resource> centre = {},
                   std::vector<Resource> cost = {},
-                  const RegleDePoints* rule = nullptr);
+                  std::shared_ptr<RegleDePoints> rule = nullptr);
 
     // getters
     const std::array<Coin, 4>& getCoins() const;

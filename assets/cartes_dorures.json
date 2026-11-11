@@ -1,0 +1,20 @@
+[
+  {
+    "id": 41,
+    "regne": "ANIMAL",
+    "cout": {
+      "ANIMAL": 2,
+      "VEGETAL": 1
+    },
+    "points": {
+      "type": "FIXE",
+      "valeur": 3
+    },
+    "recto": {
+      "HG": "VIDE",
+      "HD": "INVISIBLE",
+      "BG": "PLUME",
+      "BD": "VIDE"
+    }
+  }
+]

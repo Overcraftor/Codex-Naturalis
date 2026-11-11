@@ -1,0 +1,34 @@
+[
+  {
+    "id": 81,
+    "recto": {
+      "HG": "VIDE",
+      "HD": "VIDE",
+      "BG": "CHAMPIGNON",
+      "BD": "VEGETAL"
+    },
+    "verso": {
+      "HG": "INVISIBLE",
+      "HD": "VIDE",
+      "BG": "VIDE",
+      "BD": "INVISIBLE",
+      "centre": ["INSECTE", "ANIMAL"]
+    }
+  },
+  {
+    "id": 82,
+    "recto": {
+      "HG": "ANIMAL",
+      "HD": "VIDE",
+      "BG": "VIDE",
+      "BD": "INSECTE"
+    },
+    "verso": {
+      "HG": "VIDE",
+      "HD": "INVISIBLE",
+      "BG": "INVISIBLE",
+      "BD": "VIDE",
+      "centre": ["CHAMPIGNON", "VEGETAL", "INSECTE"]
+    }
+  }
+]
