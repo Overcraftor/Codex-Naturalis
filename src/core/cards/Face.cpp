@@ -1,6 +1,8 @@
 #include "Face.h"
 #include <stdexcept>
 
+#include "scoring/RegleDePoints.h"
+
 Face::Face(std::array<Coin, 4> coins_in,
            std::vector<Resource> center_in,
            std::vector<Resource> cost_in,
@@ -22,4 +24,10 @@ const Coin& Face::getCoin(PositionCoin pos) const {
 
 const std::vector<Resource>& Face::getCentre() const { return center; }
 const std::vector<Resource>& Face::getCout() const { return cost; }
-const RegleDePoints* Face::getRegleDePoints() const { return rule; }
+
+int Face::getPoints(const Manuscrit& m, const Placement& p) const
+{
+    if (rule == nullptr)
+        return 0;
+    return rule->calculer(m, p);
+}

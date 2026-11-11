@@ -6,6 +6,8 @@
 #include "cards/Coin.h"
 
 class RegleDePoints;
+class Manuscrit;
+struct Placement;
 
 class Face {
     std::array<Coin, 4> coins;
@@ -26,5 +28,5 @@ public:
     const Coin& getCoin(PositionCoin pos) const;
     const std::vector<Resource>& getCentre() const;
     const std::vector<Resource>& getCout() const;
-    const RegleDePoints* getRegleDePoints() const;
+    int getPoints(const Manuscrit& m, const Placement& p) const;
 };
