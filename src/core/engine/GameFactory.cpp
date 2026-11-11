@@ -43,9 +43,9 @@ static Object stringToObjet(const std::string& str) {
     throw std::invalid_argument("Objet inconnu : " + str);
 }
 
-std::vector<std::shared_ptr<const CartePiochable>> GameFactory::genererCartesRessources()
+std::vector<const CartePiochable*> GameFactory::genererCartesRessources()
 {
-    std::vector<std::shared_ptr<const CartePiochable>> cartes;
+    std::vector<const CartePiochable*> cartes;
     cartes.reserve(40);
 
     std::ifstream file(CARTES_RESSOURCES_FILE);
@@ -73,22 +73,22 @@ std::vector<std::shared_ptr<const CartePiochable>> GameFactory::genererCartesRes
             creerCoin(PositionCoin::HG, item["recto"]["HG"])
         };
 
-        std::shared_ptr<RegleDePoints> regle = nullptr;
+        RegleDePoints* regle = nullptr;
         if (item.contains("points") && item["points"] > 0)
-            regle = std::make_shared<PointsFixes>(item["points"]);
+            regle = new PointsFixes(item["points"]);
 
-        const Face recto = Face(coinsRecto, {}, {}, regle);
-        const Face verso = Face(coinsVerso, {regne}, {});
+        Face recto = Face(coinsRecto, {}, {}, regle);
+        Face verso = Face(coinsVerso, {regne}, {});
 
-        cartes.push_back(std::make_shared<CarteRessource>(recto, verso, regne));
+        cartes.push_back(new CarteRessource(std::move(recto), std::move(verso), regne));
     }
 
     return cartes;
 }
 
-std::vector<std::shared_ptr<const CartePiochable>> GameFactory::genererCartesDorures()
+std::vector<const CartePiochable*> GameFactory::genererCartesDorures()
 {
-    std::vector<std::shared_ptr<const CartePiochable>> cartes;
+    std::vector<const CartePiochable*> cartes;
     cartes.reserve(40);
 
     std::ifstream file(CARTES_DORURES_FILE);
@@ -130,7 +130,7 @@ std::vector<std::shared_ptr<const CartePiochable>> GameFactory::genererCartesDor
         }
 
         // points
-        std::shared_ptr<RegleDePoints> regle = nullptr;
+        RegleDePoints* regle = nullptr;
         if (item.contains("points"))
         {
             std::string type = item["points"]["type"];
@@ -138,29 +138,29 @@ std::vector<std::shared_ptr<const CartePiochable>> GameFactory::genererCartesDor
 
             if (type=="FIXE")
             {
-                regle = std::make_shared<PointsFixes>(val);
+                regle = new PointsFixes(val);
             } else if (type=="PAR_OBJET")
             {
                 Object object = stringToObjet(item["points"]["objet"]);
-                regle = std::make_shared<PointsParObjet>(val, object);
+                regle = new PointsParObjet(val, object);
             } else if (type=="PAR_COIN")
             {
-                regle = std::make_shared<PointsParCoinRecouvert>(val);
+                regle = new PointsParCoinRecouvert(val);
             }
         }
 
-        const Face recto = Face(coinsRecto, {}, coutRecto, regle);
-        const Face verso = Face(coinsVerso, {regne}, {});
+        Face recto = Face(coinsRecto, {}, coutRecto, regle);
+        Face verso = Face(coinsVerso, {regne}, {});
 
-        cartes.push_back(std::make_shared<CarteRessource>(recto, verso, regne));
+        cartes.push_back(new CarteRessource(std::move(recto), std::move(verso), regne));
     }
 
     return cartes;
 }
 
-std::vector<std::shared_ptr<const CarteDepart>> GameFactory::genererCartesDepart()
+std::vector<const CarteDepart*> GameFactory::genererCartesDepart()
 {
-    std::vector<std::shared_ptr<const CarteDepart>> cartes;
+    std::vector<const CarteDepart*> cartes;
     cartes.reserve(6);
 
     std::ifstream file(CARTES_DEPART_FILE);
@@ -193,13 +193,13 @@ std::vector<std::shared_ptr<const CarteDepart>> GameFactory::genererCartesDepart
 
         Face verso(coinsVerso, centreVerso, {}, nullptr);
 
-        cartes.push_back(std::make_shared<CarteDepart>(recto, verso));
+        cartes.push_back(new CarteDepart(std::move(recto), std::move(verso)));
     }
 
     return cartes;
 }
 
-std::vector<std::shared_ptr<const Objectif>> GameFactory::genererObjectifs()
+std::vector<const Objectif*> GameFactory::genererObjectifs()
 {
     // TODO
 }

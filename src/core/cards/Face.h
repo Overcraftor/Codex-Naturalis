@@ -1,12 +1,11 @@
 #pragma once
 
 #include <array>
-#include <memory>
 #include <vector>
 #include "Types.h"
 #include "cards/Coin.h"
+#include "scoring/RegleDePoints.h"
 
-class RegleDePoints;
 class Manuscrit;
 struct Placement;
 
@@ -16,13 +15,17 @@ class Face {
     std::vector<Resource> center;
     std::vector<Resource> cost;
 
-    std::shared_ptr<RegleDePoints> rule;
+    RegleDePoints* rule;
 
 public:
+    ~Face() { delete rule; }
+
+    Face(const Face&) = delete;
+    Face& operator=(const Face&) = delete;
     explicit Face(const std::array<Coin, 4>& coins,
                   std::vector<Resource> centre = {},
                   std::vector<Resource> cost = {},
-                  std::shared_ptr<RegleDePoints> rule = nullptr);
+                  RegleDePoints* rule = nullptr);
 
     // getters
     const std::array<Coin, 4>& getCoins() const;

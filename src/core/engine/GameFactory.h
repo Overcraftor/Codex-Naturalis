@@ -18,9 +18,9 @@ public:
     ~GameFactory() = delete;
 
     // utilisation des shared pointeurs pour ne pas avoir à libérer la mémoire plus tard (c'est automatique)
-    static std::vector<std::shared_ptr<const CartePiochable>> genererCartesRessources();
-    static std::vector<std::shared_ptr<const CartePiochable>> genererCartesDorures();
-    static std::vector<std::shared_ptr<const CarteDepart>> genererCartesDepart();
+    static std::vector<const CartePiochable*> genererCartesRessources();
+    static std::vector<const CartePiochable*> genererCartesDorures();
+    static std::vector<const CarteDepart*> genererCartesDepart();
 
-    static std::vector<std::shared_ptr<const Objectif>> genererObjectifs();
+    static std::vector<const Objectif*> genererObjectifs();
 };

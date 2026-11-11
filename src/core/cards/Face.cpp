@@ -7,11 +7,11 @@
 Face::Face(const std::array<Coin, 4>& coins_in,
            std::vector<Resource> center_in,
            std::vector<Resource> cost_in,
-           std::shared_ptr<RegleDePoints> rule)
+           RegleDePoints* rule)
     : coins(coins_in),
       center(std::move(center_in)),
       cost(std::move(cost_in)),
-      rule(std::move(rule))
+      rule(rule)
 {
     if (center.size() > 3) throw std::invalid_argument("Trop de ressources au centre (max 3)");
     if (cost.size() > 5) throw std::invalid_argument("Coût trop élevé (max 5)");
