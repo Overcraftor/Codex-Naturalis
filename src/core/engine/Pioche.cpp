@@ -1,4 +1,4 @@
-#include "pioche.h"
+#include "Pioche.h"
 #include <algorithm>
 #include <random>
 #include <stdexcept>
